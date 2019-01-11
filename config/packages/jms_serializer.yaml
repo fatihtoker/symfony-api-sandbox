@@ -1,0 +1,7 @@
+jms_serializer:
+    default_context:
+        serialization:
+            serialize_null: true
+    handlers:
+        datetime:
+            default_format: "c"

@@ -1,0 +1,7 @@
+fos_rest:
+    param_fetcher_listener: true
+    body_listener: true
+    format_listener:
+        enabled: false
+        rules:
+            - { path: '^/api/v1', priorities: ['json'], fallback_format: 'json' }
