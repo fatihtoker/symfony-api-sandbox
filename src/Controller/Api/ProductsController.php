@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 use App\Entity\Product;
 use App\Response\ApiResponse;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,7 +28,7 @@ class ProductsController extends ApiController
     {
         $productRepo = $this->em->getRepository(Product::class);
         $data = $productRepo->findAll();
-        return $this->createJsonResponse(ApiResponse::createSuccessResponse($data));
+        return $this->createJsonResponse(ApiResponse::createSuccessResponse($data), ['products_list']);
     }
 
     /**

@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class Product
 {
@@ -13,28 +16,46 @@ class Product
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default", "products_list"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default", "products_list"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=520, nullable=true)
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default", "products_list"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default", "products_list"})
      */
     private $onSale;
 
     /**
      * @ORM\Column(type="integer")
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default", "products_list"})
      */
     private $price;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Parameter")
+     * @ORM\JoinColumn(nullable=false)
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default", "products_list"})
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -85,6 +106,18 @@ class Product
     public function setPrice(int $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Parameter
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Parameter $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
