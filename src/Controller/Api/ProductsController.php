@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Product;
 use App\Response\ApiResponse;
+use App\Service\ProductsService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,13 +23,25 @@ class ProductsController extends ApiController
 
     /**
      * @Route("/products", methods={"GET"})
+     * @param ProductsService $service
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getProductsAction()
+    public function getProductsAction(ProductsService $service)
     {
-        $productRepo = $this->em->getRepository(Product::class);
-        $data = $productRepo->findAll();
+        $data = $service->getAll();
         return $this->createJsonResponse(ApiResponse::createSuccessResponse($data), ['products_list']);
+    }
+
+    /**
+     * @Rest\Route("/products-category", methods={"GET"})
+     * @param ProductsService $service
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getProductsWithCategoryAction(ProductsService $service)
+    {
+        $data = $service->getAllByCategory();
+        return $this->createJsonResponse(ApiResponse::createSuccessResponse($data), ['product_category']);
     }
 
     /**

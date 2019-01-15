@@ -17,14 +17,14 @@ class Product
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      * @Serializer\Expose()
-     * @Serializer\Groups({"Default", "products_list"})
+     * @Serializer\Groups({"Default", "products_list", "product_category"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Serializer\Expose()
-     * @Serializer\Groups({"Default", "products_list"})
+     * @Serializer\Groups({"Default", "products_list", "product_category"})
      */
     private $name;
 
@@ -45,7 +45,7 @@ class Product
     /**
      * @ORM\Column(type="integer")
      * @Serializer\Expose()
-     * @Serializer\Groups({"Default", "products_list"})
+     * @Serializer\Groups({"Default", "products_list", "product_category"})
      */
     private $price;
 

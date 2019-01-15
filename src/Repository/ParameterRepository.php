@@ -36,6 +36,16 @@ class ParameterRepository extends ServiceEntityRepository
     }
     */
 
+    public function findByTypeName($name)
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.parameterType', 'pt')
+            ->where('pt.name = :name')
+            ->setParameters(['name' => $name])
+            ->getQuery()
+            ->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Parameter
     {

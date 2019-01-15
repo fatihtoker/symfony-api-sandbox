@@ -2,7 +2,7 @@ fos_rest:
     param_fetcher_listener: true
     body_listener: true
     format_listener:
-        enabled: true
+        enabled: false
         rules:
             - { path: '^/api', priorities: ['json'], fallback_format: 'json' }
             - { path: '^/', priorities: [ 'html', '*/*'], fallback_format: 'json', prefer_extension: true }
