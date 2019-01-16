@@ -7,3 +7,12 @@ api:
     resource: ../src/Controller/Api
     prefix: /api/v1
     defaults: { _format: json }
+
+default:
+    path: /{path}
+    methods: [GET]
+    requirements:
+        path: "^(?!api/).*" # api/ ile başlamayan bütün karakter dizileri
+    defaults:
+        _controller: App\Controller\DefaultController:defaultAction
+

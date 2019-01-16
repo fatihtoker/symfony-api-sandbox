@@ -7,6 +7,7 @@ use App\Response\ApiResponse;
 use App\Service\ProductsService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductsController extends ApiController
@@ -24,11 +25,12 @@ class ProductsController extends ApiController
     /**
      * @Route("/products", methods={"GET"})
      * @param ProductsService $service
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getProductsAction(ProductsService $service)
+    public function getProductsAction(Request $request, ProductsService $service)
     {
-        $data = $service->getAll();
+        $data = $service->getAll($request);
         return $this->createJsonResponse(ApiResponse::createSuccessResponse($data), ['products_list']);
     }
 

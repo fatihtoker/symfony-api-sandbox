@@ -5,7 +5,9 @@ namespace App\Service;
 use App\Entity\Parameter;
 use App\Entity\ParameterType;
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductsService
 {
@@ -14,14 +16,24 @@ class ProductsService
      */
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * @var ProductRepository
+     */
+    private $repo;
+
+    public function __construct(EntityManagerInterface $em, ProductRepository $repo)
     {
         $this->em = $em;
+        $this->repo = $repo;
     }
 
-    public function getAll()
+    public function getAll(Request $request)
     {
         $productRepo = $this->em->getRepository(Product::class);
+        $query = $request->get('query');
+        if ($query) {
+            return $this->repo->getSearchResults($query);
+        }
         return $productRepo->findAll();
     }
 
