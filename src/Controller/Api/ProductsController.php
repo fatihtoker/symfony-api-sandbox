@@ -2,11 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Product;
 use App\Response\ApiResponse;
 use App\Service\ProductsService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +12,6 @@ class ProductsController extends ApiController
 {
     /**
      * @Route("/products", methods={"GET"})
-     * @IsGranted("ROLE_ADMIN")
      * @param ProductsService $service
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
