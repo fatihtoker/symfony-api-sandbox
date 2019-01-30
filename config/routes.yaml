@@ -2,24 +2,22 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-auth_login_check:
-    path: /auth/login_check
 api:
     type: annotation
     resource: ../src/Controller/Api
     prefix: /api/v1
     defaults: { _format: json }
-#api_admin:
-#    type: annotation
-#    resource: ../src/Controller/Admin
-#    prefix: /admin
-#    defaults: { _format: json }
+admin:
+    type: annotation
+    resource: ../src/Controller/Admin
+    prefix: /admin
+    defaults: { _format: json }
 
 default:
     path: /{path}
     methods: [GET]
     requirements:
-        path: "^(?!api/).*" # api/ ile başlamayan bütün karakter dizileri
+        path: "^(?!api/|admin/|auth/).*" # api/ ile başlamayan bütün karakter dizileri
     defaults:
         _controller: App\Controller\DefaultController:defaultAction
 
