@@ -1,8 +1,9 @@
-nelmio_cors:
-    defaults:
-        allow_headers: ['Content-Type', 'Authorization']
-        allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
-        allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
-        max_age: 3600
-    paths:
-        '^/api/': ~
+// TODO: Uninstall the bundle.
+#nelmio_cors:
+#    defaults:
+#        allow_headers: ['Content-Type', 'Authorization']
+#        allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
+#        allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+#        max_age: 3600
+#    paths:
+#        '^/api/': ~

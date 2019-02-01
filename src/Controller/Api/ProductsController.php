@@ -4,7 +4,6 @@ namespace App\Controller\Api;
 
 use App\Response\ApiResponse;
 use App\Service\ProductsService;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,7 +22,7 @@ class ProductsController extends ApiController
     }
 
     /**
-     * @Rest\Route("/products-category", methods={"GET"})
+     * @Route("/products-category", methods={"GET"})
      * @param ProductsService $service
      *
      * @return \Symfony\Component\HttpFoundation\Response
