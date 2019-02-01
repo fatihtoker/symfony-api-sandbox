@@ -1,4 +1,4 @@
-// TODO: Uninstall the bundle.
+# TODO: Uninstall the bundle.
 #nelmio_cors:
 #    defaults:
 #        allow_headers: ['Content-Type', 'Authorization']
