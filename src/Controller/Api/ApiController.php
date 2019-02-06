@@ -22,6 +22,6 @@ class ApiController extends AbstractController
 
         $content = $serializer->serialize($apiResponse->toAssocArray(), 'json', $serializationContext);
 
-        return new Response($content, $apiResponse->getStatusCode(), ['Content-Type' => 'application/json']);
+        return new Response($content, $apiResponse->getCode(), ['Content-Type' => 'application/json']);
     }
 }

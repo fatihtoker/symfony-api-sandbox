@@ -30,7 +30,7 @@ class ApiResponse
      *
      * @Serializer\Expose()
      */
-    private $statusCode;
+    private $code;
 
     /**
      * @var string
@@ -60,7 +60,7 @@ class ApiResponse
 
     public function __construct(
         $status = null,
-        $statusCode = null,
+        $code = null,
         $message = null,
         $data = null,
         $errors = null,
@@ -68,7 +68,7 @@ class ApiResponse
     )
     {
         $this->status = $status;
-        $this->statusCode = $statusCode;
+        $this->code = $code;
         $this->message = $message;
         $this->data = $data;
         $this->errors = $errors;
@@ -85,9 +85,9 @@ class ApiResponse
         return new self(self::STATUS_INFO, 200, $message);
     }
 
-    public static function createErrorResponse($statusCode, $message, $errors)
+    public static function createErrorResponse($code, $message, $errors)
     {
-        return new self(self::STATUS_ERROR, $statusCode, $message, null, $errors );
+        return new self(self::STATUS_ERROR, $code, $message, null, $errors );
     }
 
     /**
@@ -109,17 +109,17 @@ class ApiResponse
     /**
      * @return int
      */
-    public function getStatusCode()
+    public function getCode()
     {
-        return $this->statusCode;
+        return $this->code;
     }
 
     /**
-     * @param int $statusCode
+     * @param int $code
      */
-    public function setStatusCode($statusCode)
+    public function setCode($code)
     {
-        $this->statusCode = $statusCode;
+        $this->code = $code;
     }
 
     /**
@@ -193,8 +193,8 @@ class ApiResponse
         if (isset($this->status)) {
             $data['status'] = $this->status;
         }
-        if (isset($this->statusCode)) {
-            $data['statusCode'] = $this->statusCode;
+        if (isset($this->code)) {
+            $data['code'] = $this->code;
         }
         if (isset($this->message)) {
             $data['message'] = $this->message;
