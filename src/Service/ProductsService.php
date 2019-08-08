@@ -47,6 +47,8 @@ class ProductsService
 
         $categories = $paramRepo->findBy(['parameterType' => $categoryParam]);
 
+        $data = [];
+
         foreach ($categories as $category) {
             $productsArr = $productRepo->findBy(['category' => $category]);
             $data[] = ['category' => $category->getDisplayName(), 'products' => $productsArr];
