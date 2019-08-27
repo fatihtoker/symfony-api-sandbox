@@ -7,10 +7,13 @@ use App\Service\ProductsService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/products")
+ */
 class ProductsController extends ApiController
 {
     /**
-     * @Route("/products", methods={"GET"})
+     * @Route("", methods={"GET"})
      * @param ProductsService $service
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -22,7 +25,7 @@ class ProductsController extends ApiController
     }
 
     /**
-     * @Route("/products-category", methods={"GET"})
+     * @Route("/category", methods={"GET"})
      * @param ProductsService $service
      *
      * @return \Symfony\Component\HttpFoundation\Response
