@@ -24,7 +24,7 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Role")
      * @ORM\JoinTable(name="users_roles")
      */
     private $roles = [];
