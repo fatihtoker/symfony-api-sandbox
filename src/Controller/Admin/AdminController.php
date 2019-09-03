@@ -22,6 +22,15 @@ class AdminController extends ApiController
      */
     public function indexAction()
     {
-        return $this->createJsonResponse(ApiResponse::createSuccessResponse([], 'User is granted. This is a friendly message from developer.'));
+        return $this->createJsonResponse(ApiResponse::createSuccessResponse([], 'User is granted.'));
+    }
+
+    /**
+     * @Route("/user-info", methods={"GET"}, name="admin_user_info")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function userInfoAction()
+    {
+        return $this->createJsonResponse(ApiResponse::createSuccessResponse($this->getUser(), 'User is granted.'), ['user_info']);
     }
 }

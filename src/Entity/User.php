@@ -5,9 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * 
+ * @Serializer\ExclusionPolicy("all")
  */
 class User implements UserInterface
 {
@@ -20,12 +23,18 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * 
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default", "user_info"})
      */
     private $email;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Role")
      * @ORM\JoinTable(name="users_roles")
+     * 
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default"})
      */
     private $roles = [];
 
