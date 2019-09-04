@@ -57,6 +57,14 @@ class Product
      */
     private $category;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Parameter")
+     * @ORM\JoinColumn(nullable=true)
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default", "products_list"})
+     */
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -118,6 +126,18 @@ class Product
     public function setCategory(?Parameter $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getType(): ?Parameter
+    {
+        return $this->type;
+    }
+
+    public function setType(?Parameter $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

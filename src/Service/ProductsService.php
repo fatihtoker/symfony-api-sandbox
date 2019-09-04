@@ -30,11 +30,19 @@ class ProductsService
     public function getAll(Request $request)
     {
         $productRepo = $this->em->getRepository(Product::class);
+        $paramRepo = $this->em->getRepository(Parameter::class);
         $query = $request->get('query');
+        $type = $request->get('type');
+        $data = [];
         if ($query) {
-            return $this->repo->getSearchResults($query);
+            $data = $productRepo->getSearchResults($query);
+        } else if ($type) {
+            $param = $paramRepo->findOneBy(['name' => $type]);
+            $data = $productRepo->findBy(['type' => $param]);
+        } else {
+            $data = $productRepo->findAll();
         }
-        return $productRepo->findAll();
+        return $data;
     }
 
     public function getAllByCategory()
