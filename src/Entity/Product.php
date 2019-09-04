@@ -61,7 +61,7 @@ class Product
      * @ORM\ManyToOne(targetEntity="App\Entity\Parameter")
      * @ORM\JoinColumn(nullable=true)
      * @Serializer\Expose()
-     * @Serializer\Groups({"Default", "products_list"})
+     * @Serializer\Groups({"Default"})
      */
     private $type;
 
