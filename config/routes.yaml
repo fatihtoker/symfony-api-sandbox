@@ -11,7 +11,7 @@ admin:
     type: annotation
     resource: ../src/Controller/Admin
     prefix: /admin
-    defaults: { _format: json }
+  #  defaults: { _format: json }
 
 default:
     path: /{path}

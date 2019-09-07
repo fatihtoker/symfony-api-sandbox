@@ -36,7 +36,7 @@ class ProductsService
         $data = [];
         if ($query) {
             $data = $productRepo->getSearchResults($query);
-        } else if ($type) {
+        } else if ($type !== '') {
             $param = $paramRepo->findOneBy(['name' => $type]);
             $data = $productRepo->findBy(['type' => $param]);
         } else {

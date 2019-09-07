@@ -18,6 +18,8 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default", "user_list"})
      */
     private $id;
 
@@ -25,7 +27,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * 
      * @Serializer\Expose()
-     * @Serializer\Groups({"Default", "user_info"})
+     * @Serializer\Groups({"Default", "user_info", "user_list"})
      */
     private $email;
 
@@ -34,7 +36,7 @@ class User implements UserInterface
      * @ORM\JoinTable(name="users_roles")
      * 
      * @Serializer\Expose()
-     * @Serializer\Groups({"Default"})
+     * @Serializer\Groups({"Default", "user_list"})
      */
     private $roles = [];
 

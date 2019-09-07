@@ -3,40 +3,38 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
- * 
- * @Serializer\ExclusionPolicy("all")
+ * @ORM\Entity(repositoryClass="App\Repository\MenuRepository")
  */
-class Role
+class Menu
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * 
-     * @Serializer\Expose()
-     * @Serializer\Groups({"Default", "user_list"})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=140)
-     * 
-     * @Serializer\Expose()
-     * @Serializer\Groups({"Default", "user_list"})
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * 
-     * @Serializer\Expose()
-     * @Serializer\Groups({"Default", "user_list"})
      */
     private $displayName;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $orderIndex;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $routerLink;
 
     public function getId(): ?int
     {
@@ -63,6 +61,30 @@ class Role
     public function setDisplayName(string $displayName): self
     {
         $this->displayName = $displayName;
+
+        return $this;
+    }
+
+    public function getOrderIndex(): ?int
+    {
+        return $this->orderIndex;
+    }
+
+    public function setOrderIndex(int $orderIndex): self
+    {
+        $this->orderIndex = $orderIndex;
+
+        return $this;
+    }
+
+    public function getRouterLink(): ?string
+    {
+        return $this->routerLink;
+    }
+
+    public function setRouterLink(string $routerLink): self
+    {
+        $this->routerLink = $routerLink;
 
         return $this;
     }
