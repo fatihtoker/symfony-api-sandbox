@@ -32,5 +32,5 @@ class AdminController extends ApiController
     public function userInfoAction()
     {
         return $this->createJsonResponse(ApiResponse::createSuccessResponse($this->getUser(), 'User is granted.'), ['user_info']);
-    }
+    }  
 }
