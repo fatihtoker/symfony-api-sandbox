@@ -8,6 +8,7 @@ use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Response\ApiResponse;
 
 class ProductsService
 {
@@ -36,13 +37,29 @@ class ProductsService
         $data = [];
         if ($query) {
             $data = $productRepo->getSearchResults($query);
-        } else if ($type !== '') {
+        } else if ($type) {
             $param = $paramRepo->findOneBy(['name' => $type]);
             $data = $productRepo->findBy(['type' => $param]);
         } else {
             $data = $productRepo->findAll();
         }
         return $data;
+    }
+
+    public function delete($id)
+    {
+        $productRepo = $this->em->getRepository(Product::class);
+
+        $product = $productRepo->find($id);
+
+        if (!$id) {
+            return ApiResponse::createErrorResponse(422, 'Böyle bir ürün bulunamadı', []);
+        }
+
+        $this->em->remove($product);
+        $this->em->flush();
+        
+        return ApiResponse::createSuccessResponse([], 'Ürün başarı ile silindi.');
     }
 
     public function getAllByCategory()
@@ -63,5 +80,14 @@ class ProductsService
         }
 
         return $data;
+    }
+
+    public function getCategories() {
+        $paramRepo = $this->em->getRepository(Parameter::class);
+        $paramTypeRepo = $this->em->getRepository(ParameterType::class);
+
+        $categoryParam = $paramTypeRepo->findOneBy(['name' => 'product_category']);
+
+        return $paramRepo->findBy(['parameterType' => $categoryParam]);
     }
 }

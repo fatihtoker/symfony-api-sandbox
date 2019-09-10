@@ -6,7 +6,6 @@ use App\Controller\Api\ApiController;
 use App\Response\ApiResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\MenusService;
 use Symfony\Component\HttpFoundation\Request;
 use App\Service\UsersService;
 

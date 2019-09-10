@@ -36,6 +36,11 @@ class Menu
      */
     private $routerLink;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $iconClass;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class Menu
     public function setRouterLink(string $routerLink): self
     {
         $this->routerLink = $routerLink;
+
+        return $this;
+    }
+
+    public function getIconClass(): ?string
+    {
+        return $this->iconClass;
+    }
+
+    public function setIconClass(?string $iconClass): self
+    {
+        $this->iconClass = $iconClass;
 
         return $this;
     }

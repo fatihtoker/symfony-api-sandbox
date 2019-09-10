@@ -32,6 +32,7 @@ class UsersService
         $userRepo = $this->em->getRepository(User::class);
         $roleRepo = $this->em->getRepository(Role::class);
 
+        $id = $request->get('id');
         $email = $request->get('email');
         $plainPassword = $request->get('password');
         $roles = $request->get('roles');
@@ -44,7 +45,11 @@ class UsersService
 
         
 
-        $user = new User();
+        if ($id) {
+             $user = $userRepo->find($id);
+        } else {
+            $user = new User();
+        }
         $encodedPassword = $this->encoder->encodePassword($user, $plainPassword);
 
         $user->setEmail($email);
@@ -58,8 +63,11 @@ class UsersService
 
         $this->em->persist($user);
         $this->em->flush();
+        
+        $response = $id ? 'Kullanıcı başarı ile güncellendi.' : 'Kullanıcı başarı ile oluşturuldu.';
 
-        return ApiResponse::createSuccessResponse([], 'Kullanıcı başarı ile oluşturuldu.');
+
+        return ApiResponse::createSuccessResponse([], $response);
     }
 
     public function delete($id)
