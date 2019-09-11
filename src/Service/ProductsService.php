@@ -90,4 +90,59 @@ class ProductsService
 
         return $paramRepo->findBy(['parameterType' => $categoryParam]);
     }
+
+    public function getTypes() {
+        $paramRepo = $this->em->getRepository(Parameter::class);
+        $paramTypeRepo = $this->em->getRepository(ParameterType::class);
+
+        $categoryParam = $paramTypeRepo->findOneBy(['name' => 'product_type']);
+
+        return $paramRepo->findBy(['parameterType' => $categoryParam]);
+    }
+
+    public function create(Request $request)
+    {
+        $productRepo = $this->em->getRepository(Product::class);
+        $paramRepo = $this->em->getRepository(Parameter::class);
+
+        $id = $request->get('id');
+        $name = $request->get('name');
+        $_category = $request->get('category');
+        $description = $request->get('description');
+        $onSale = $request->get('onSale');
+        $price = $request->get('price');
+        $_type = $request->get('type');
+        $image = $request->files->get('image');
+
+        if (!($name && $_category && $description && $onSale && $price && $image)) {
+            return ApiResponse::createErrorResponse(422, 'Zorunlu alanlar boş bırakılamaz', []);
+        }
+
+        $category = $paramRepo->find($_category);
+        $type = $paramRepo->find($_type);
+
+        
+
+        if ($id) {
+            $product = $productRepo->find($id);
+        } else {
+            $product = new Product();
+        }
+
+        $product->setName($name);
+        $product->setCategory($category);
+        $product->setDescription($description);
+        $product->setOnSale($onSale);
+        $product->setPrice($price);
+        $product->setType($type);
+        $product->setImageFile($image);
+
+        $this->em->persist($product);
+        $this->em->flush();
+        
+        $response = $id ? 'Ürün başarı ile güncellendi.' : 'Ürün başarı ile oluşturuldu.';
+
+
+        return ApiResponse::createSuccessResponse([], $response);
+    }
 }

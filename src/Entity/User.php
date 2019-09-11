@@ -14,6 +14,7 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class User implements UserInterface
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

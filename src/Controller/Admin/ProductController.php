@@ -34,11 +34,20 @@ class ProductController extends ApiController
         return $this->createJsonResponse(ApiResponse::createSuccessResponse($data));
     }
 
+    /**
+     * @Route("/types", name="products-types", methods={"GET"})
+     */
+    public function getTypesAction(Request $request, ProductsService $service)
+    {
+        $data = $service->getTypes($request);
+        return $this->createJsonResponse(ApiResponse::createSuccessResponse($data));
+    }
+
 
     /**
      * @Route("/create", name="add-products", methods={"POST"})
      */
-    public function createUserAction(Request $request, UsersService $service)
+    public function createProductAction(Request $request, ProductsService $service)
     {
         $response = $service->create($request);
         return $this->createJsonResponse($response);
