@@ -83,6 +83,9 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Serializer\Expose()
+     * @Serializer\Groups({"Default", "products_list"})
      *
      * @var string
      */

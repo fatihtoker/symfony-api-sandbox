@@ -56,7 +56,7 @@ class ProductController extends ApiController
     /**
      * @Route("/delete/{id}", name="delete-products", methods={"POST"})
      */
-    public function deleteUserAction(int $id, ProductsService $service)
+    public function deleteProductAction(int $id, ProductsService $service)
     {
         $response = $service->delete($id);
 

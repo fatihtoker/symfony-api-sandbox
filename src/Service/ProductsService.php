@@ -9,6 +9,7 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Response\ApiResponse;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class ProductsService
 {
@@ -22,10 +23,16 @@ class ProductsService
      */
     private $repo;
 
-    public function __construct(EntityManagerInterface $em, ProductRepository $repo)
+    /**
+     * @var UploaderHelper
+     */
+    private $uploaderHelper;
+
+    public function __construct(EntityManagerInterface $em, ProductRepository $repo, UploaderHelper $uploaderHelper)
     {
         $this->em = $em;
         $this->repo = $repo;
+        $this->uploaderHelper = $uploaderHelper;
     }
 
     public function getAll(Request $request)
@@ -43,7 +50,12 @@ class ProductsService
         } else {
             $data = $productRepo->findAll();
         }
-        return $data;
+        $result = [];
+        foreach ($data as $item) {
+            $object = (object) ['obj' => $item, 'imgUrl' => $this->uploaderHelper->asset($item, 'imageFile')];
+            array_push($result, $object);
+        }
+        return $result;
     }
 
     public function delete($id)
