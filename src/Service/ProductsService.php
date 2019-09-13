@@ -158,6 +158,7 @@ class ProductsService
         $this->em->flush();
 
         foreach ($images as $image) {
+            // todo: handle update
             $uploadedFile = new UploadedFile();
             $originalName = $image->getClientOriginalName();
             $uploadedFile->setOriginalName($originalName);
@@ -169,6 +170,7 @@ class ProductsService
             $uploadedFile->setDocumentFile($image);
             $uploadedFile->setProduct($product);
             $this->em->persist($uploadedFile);
+            $product->addImage($image);
             
         }
 
