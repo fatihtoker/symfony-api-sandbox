@@ -49,7 +49,7 @@ class ProductController extends ApiController
      */
     public function createProductAction(Request $request, ProductsService $service)
     {
-        $response = $service->create($request);
+        $response = $service->create($request, $this->getUser());
         return $this->createJsonResponse($response);
     }
 

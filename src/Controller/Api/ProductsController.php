@@ -23,7 +23,7 @@ class ProductsController extends ApiController
      */
     public function getProductsAction(Request $request, ProductsService $service)
     {
-        $data = $service->getAll($request);
+        $data = $service->getAll($request, true);
         return $this->createJsonResponse(ApiResponse::createSuccessResponse($data), ['products_list']);
     }
 
@@ -37,5 +37,17 @@ class ProductsController extends ApiController
     {
         $data = $service->getAllByCategory();
         return $this->createJsonResponse(ApiResponse::createSuccessResponse($data), ['product_category']);
+    }
+
+     /**
+     * @Route("/{id}", methods={"GET"})
+     * @param ProductsService $service
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getProductAction(Request $request, ProductsService $service, $id)
+    {
+        $response = $service->getProduct($request, $id);
+        return $this->createJsonResponse($response, ['products_list']);
     }
 }

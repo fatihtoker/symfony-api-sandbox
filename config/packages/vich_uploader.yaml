@@ -1,8 +1,10 @@
 vich_uploader:
     db_driver: orm
+    storage: gaufrette
 
     mappings:
-       product_image:
-           uri_prefix: /images/products
-           upload_destination: '%kernel.project_dir%/public/images/products'
+        file:
+           uri_prefix: "%env(AWS_BASE_URL)%/%env(AWS_BUCKET_NAME)%"
+           upload_destination: document_fs
            namer: Vich\UploaderBundle\Naming\UniqidNamer
+           directory_namer: App\Service\Shared\DirectoryNamerService

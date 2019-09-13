@@ -47,13 +47,22 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function getSearchResults($query) {
+    public function getSearchResults($query, $filterOnSale = false) {
         $query = addcslashes($query, '%_');
-        return $this->createQueryBuilder('p')
+        $queryBuilder = $this->createQueryBuilder('p')
             ->addSelect('c')
             ->join('p.category', 'c')
             ->where('p.name like :query or c.displayName like :query')
-            ->setParameter('query', '%' . $query . '%')
-            ->getQuery()->getResult();
+            ->setParameter('query', '%' . $query . '%');
+
+            if ($filterOnSale) {
+                $queryBuilder->andWhere('p.onSale = 1');
+            }
+
+            return $queryBuilder->getQuery()->getResult();
+    }
+    public function findOnSale()
+    {
+        return $this->findBy(['onSale' => true]);
     }
 }

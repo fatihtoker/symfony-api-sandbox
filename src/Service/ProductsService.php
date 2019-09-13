@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Response\ApiResponse;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use App\Entity\UploadedFile;
 
 class ProductsService
 {
@@ -35,7 +36,7 @@ class ProductsService
         $this->uploaderHelper = $uploaderHelper;
     }
 
-    public function getAll(Request $request)
+    public function getAll(Request $request, $filterOnSale = false)
     {
         $productRepo = $this->em->getRepository(Product::class);
         $paramRepo = $this->em->getRepository(Parameter::class);
@@ -43,19 +44,24 @@ class ProductsService
         $type = $request->get('type');
         $data = [];
         if ($query) {
-            $data = $productRepo->getSearchResults($query);
+            $data = $productRepo->getSearchResults($query, $filterOnSale);
         } else if ($type) {
             $param = $paramRepo->findOneBy(['name' => $type]);
-            $data = $productRepo->findBy(['type' => $param]);
+            if ($filterOnSale) {
+                $data = $productRepo->findBy(['type' => $param, 'onSale' => true]);
+            } else {
+                $data = $productRepo->findBy(['type' => $param]);
+            }
+            
         } else {
-            $data = $productRepo->findAll();
+            $data = $filterOnSale ? $productRepo->findOnSale() : $productRepo->findAll();
         }
         $result = [];
-        foreach ($data as $item) {
-            $object = (object) ['obj' => $item, 'imgUrl' => $this->uploaderHelper->asset($item, 'imageFile')];
-            array_push($result, $object);
-        }
-        return $result;
+        // foreach ($data as $item) {
+        //     $object = (object) ['obj' => $item, 'imgUrl' => $this->uploaderHelper->asset($item, 'imageFile')];
+        //     array_push($result, $object);
+        // }
+        return $data;
     }
 
     public function delete($id)
@@ -112,7 +118,7 @@ class ProductsService
         return $paramRepo->findBy(['parameterType' => $categoryParam]);
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $user)
     {
         $productRepo = $this->em->getRepository(Product::class);
         $paramRepo = $this->em->getRepository(Parameter::class);
@@ -124,9 +130,9 @@ class ProductsService
         $onSale = $request->get('onSale');
         $price = $request->get('price');
         $_type = $request->get('type');
-        $image = $request->files->get('image');
+        $images = $request->files->all();
 
-        if (!($name && $_category && $description && $onSale && $price && $image)) {
+        if (!($name && $_category && $description && $onSale && $price && $images)) {
             return ApiResponse::createErrorResponse(422, 'Zorunlu alanlar boş bırakılamaz', []);
         }
 
@@ -147,14 +153,44 @@ class ProductsService
         $product->setOnSale($onSale);
         $product->setPrice($price);
         $product->setType($type);
-        $product->setImageFile($image);
 
         $this->em->persist($product);
         $this->em->flush();
+
+        foreach ($images as $image) {
+            $uploadedFile = new UploadedFile();
+            $originalName = $image->getClientOriginalName();
+            $uploadedFile->setOriginalName($originalName);
+            $uploadedFile->setUser($user);
+            $uploadedFile->setFolder($product->getId());
+            $uploadedFile->setActive(true);
+            $uploadedFile->setType($image->getMimeType());
+            $uploadedFile->setSize($image->getClientSize());
+            $uploadedFile->setDocumentFile($image);
+            $uploadedFile->setProduct($product);
+            $this->em->persist($uploadedFile);
+            
+        }
+
+        $this->em->flush();
+        
         
         $response = $id ? 'Ürün başarı ile güncellendi.' : 'Ürün başarı ile oluşturuldu.';
 
 
         return ApiResponse::createSuccessResponse([], $response);
+    }
+
+    public function getProduct(Request $request, $id)
+    {
+        $productRepo = $this->em->getRepository(Product::class);
+
+        $product = $productRepo->find($id);
+
+        if (!$product) {
+            return ApiResponse::createErrorResponse(422, 'Ürün bulunamadı.', []);
+        }
+
+        return ApiResponse::createSuccessResponse(['obj' => $product, 'imgUrl' => $this->uploaderHelper->asset($product, 'imageFile')]);
     }
 }
